@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Blog</title>
+    <style>
+        body { font-family: Arial; margin: 40px; background-color: #f5f5f5; }
+        h1 { color: #2196F3; }
+        .card { background: white; padding: 20px; margin-bottom: 15px; border-radius: 8px; }
+        .btn { padding: 8px 16px; color: white; border: none; cursor: pointer; border-radius: 4px; }
+        .btn-blue { background: #2196F3; }
+        .btn-red { background: red; }
+        input, textarea { padding: 8px; margin: 5px; border: 1px solid #ddd; border-radius: 4px; width: 300px; }
+    </style>
+</head>
+<body>
+
+<h1>📝 Blog</h1>
+
+<!-- Formulaire ajout article -->
+<div class="card">
+    <h2>Ajouter un article</h2>
+    <form th:action="@{/articles/add}" method="post">
+        <input type="text" name="title" placeholder="Titre" required/><br/>
+        <textarea name="content" placeholder="Contenu" rows="3"></textarea><br/>
+        <button class="btn btn-blue" type="submit">Publier</button>
+    </form>
+</div>
+
+<!-- Liste des articles -->
+<div th:each="article : ${articles}" class="card">
+    <h2 th:text="${article.title}"></h2>
+    <p th:text="${article.content}"></p>
+    <p>💬 <span th:text="${#lists.size(article.comments)}"></span> commentaire(s)</p>
+    <a th:href="@{/articles/{id}(id=${article.id})}">
+        <button class="btn btn-blue">Voir détail</button>
+    </a>
+    <a th:href="@{/articles/delete/{id}(id=${article.id})}">
+        <button class="btn btn-red">Supprimer</button>
+    </a>
+</div>
+
+</body>
+</html>
