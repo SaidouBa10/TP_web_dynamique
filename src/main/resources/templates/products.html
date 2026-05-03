@@ -43,7 +43,7 @@
     <tr th:each="product : ${products}">
         <td th:text="${product.id}"></td>
         <td th:text="${product.name}"></td>
-        <td th:text="${product.price} + ' €'"></td>
+        <td th:text="${product.price} + ' MRU'"></td>
         <td th:text="${product.description}"></td>
         <td>
             <a th:href="@{/products/delete/{id}(id=${product.id})}">
