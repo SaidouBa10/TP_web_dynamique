@@ -35,7 +35,7 @@ public class SecurityConfig {
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
                         .requestMatchers("/products", "/articles").permitAll()
-                        .requestMatchers("/dashboard").permitAll()  // ← ajoute cette ligne !
+                        .requestMatchers("/dashboard").permitAll()  //
                         .anyRequest().authenticated()
                 )
 
