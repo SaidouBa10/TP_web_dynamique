@@ -33,10 +33,12 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/dashboard").permitAll()
+                        .requestMatchers("/h2-console/**").permitAll()
                         .requestMatchers("/products", "/articles").permitAll()
+                        .requestMatchers("/dashboard").permitAll()  // ← ajoute cette ligne !
                         .anyRequest().authenticated()
                 )
+
                 .headers(headers -> headers
                         .frameOptions(frame -> frame.disable())
                 )
