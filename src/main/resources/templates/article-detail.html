@@ -2,41 +2,156 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Article</title>
+    <meta charset="UTF-8">
     <style>
-        body { font-family: Arial; margin: 40px; background-color: #f5f5f5; }
-        h1 { color: #2196F3; }
-        .card { background: white; padding: 20px; margin-bottom: 15px; border-radius: 8px; }
-        .btn { padding: 8px 16px; color: white; border: none; cursor: pointer; border-radius: 4px; background: #2196F3; }
-        input { padding: 8px; margin: 5px; border: 1px solid #ddd; border-radius: 4px; width: 300px; }
-        .comment { border-left: 3px solid #2196F3; padding-left: 10px; margin: 10px 0; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: white;
+        }
+        .navbar {
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding: 0 40px;
+            display: flex; align-items: center;
+            justify-content: space-between;
+            height: 70px;
+        }
+        .navbar-brand { display: flex; align-items: center; gap: 12px; }
+        .navbar-brand .icon {
+            width: 40px; height: 40px;
+            background: linear-gradient(135deg, #00b09b, #96c93d);
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px;
+        }
+        .navbar-brand h2 { font-size: 18px; font-weight: 700; }
+        .btn-back {
+            padding: 8px 20px; border-radius: 20px;
+            text-decoration: none; font-size: 14px;
+            color: rgba(255,255,255,0.7);
+            border: 1px solid rgba(255,255,255,0.15);
+            transition: all 0.3s;
+        }
+        .btn-back:hover { background: rgba(255,255,255,0.1); }
+        .main { padding: 40px; max-width: 800px; margin: 0 auto; }
+        .article-card {
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 20px; padding: 40px; margin-bottom: 30px;
+            position: relative; overflow: hidden;
+            animation: slideUp 0.5s ease;
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .article-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+            background: linear-gradient(135deg, #00b09b, #96c93d);
+        }
+        .article-title { font-size: 32px; font-weight: 800; margin-bottom: 20px;
+            background: linear-gradient(135deg, #00b09b, #96c93d);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .article-content { color: rgba(255,255,255,0.8); font-size: 16px; line-height: 1.8; }
+
+        /* COMMENTS */
+        .comments-section { margin-top: 30px; }
+        .comments-section h2 { font-size: 22px; margin-bottom: 20px; }
+        .comment-card {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 14px; padding: 20px; margin-bottom: 15px;
+            transition: all 0.3s;
+        }
+        .comment-card:hover { background: rgba(255,255,255,0.1); }
+        .comment-author { font-weight: 700; color: #00b09b; margin-bottom: 8px; font-size: 14px; }
+        .comment-text { color: rgba(255,255,255,0.8); font-size: 14px; line-height: 1.6; }
+
+        /* FORM COMMENT */
+        .form-card {
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 20px; padding: 30px; margin-top: 30px;
+        }
+        .form-card h2 { font-size: 18px; margin-bottom: 20px; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-size: 12px; font-weight: 600;
+            color: rgba(255,255,255,0.6); margin-bottom: 8px;
+            text-transform: uppercase; letter-spacing: 0.5px; }
+        .form-group input {
+            width: 100%; padding: 12px 16px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 10px; color: white; font-size: 14px;
+            transition: all 0.3s; outline: none;
+        }
+        .form-group input::placeholder { color: rgba(255,255,255,0.3); }
+        .form-group input:focus {
+            border-color: #00b09b;
+            box-shadow: 0 0 0 3px rgba(0,176,155,0.15);
+        }
+        .btn-comment {
+            padding: 12px 28px;
+            background: linear-gradient(135deg, #00b09b, #96c93d);
+            border: none; border-radius: 10px;
+            color: white; font-weight: 700; font-size: 14px;
+            cursor: pointer; transition: all 0.3s;
+        }
+        .btn-comment:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,176,155,0.4); }
+        .empty-comments { text-align: center; padding: 30px; color: rgba(255,255,255,0.4); }
     </style>
 </head>
 <body>
+<nav class="navbar">
+    <div class="navbar-brand">
+        <div class="icon">📝</div>
+        <h2>Article</h2>
+    </div>
+    <a th:href="@{/articles}" class="btn-back">← Retour au blog</a>
+</nav>
 
-<a href="/articles">← Retour</a>
-
-<div class="card">
-    <h1 th:text="${article.title}"></h1>
-    <p th:text="${article.content}"></p>
-</div>
-
-<!-- Commentaires -->
-<div class="card">
-    <h2>💬 Commentaires</h2>
-    <div th:each="comment : ${article.comments}" class="comment">
-        <strong th:text="${comment.author}"></strong>
-        <p th:text="${comment.text}"></p>
+<div class="main">
+    <!-- Article -->
+    <div class="article-card">
+        <div class="article-title" th:text="${article.title}"></div>
+        <div class="article-content" th:text="${article.content}"></div>
     </div>
 
-    <!-- Formulaire ajout commentaire -->
-    <h3>Ajouter un commentaire</h3>
-    <form th:action="@{/articles/{id}/comments/add(id=${article.id})}" method="post">
-        <input type="hidden" name="articleId" th:value="${article.id}"/>
-        <input type="text" name="author" placeholder="Votre nom" required/><br/>
-        <input type="text" name="text" placeholder="Votre commentaire" required/><br/>
-        <button class="btn" type="submit">Commenter</button>
-    </form>
-</div>
+    <!-- Commentaires -->
+    <div class="comments-section">
+        <h2>💬 Commentaires (<span th:text="${#lists.size(article.comments)}"></span>)</h2>
 
+        <div th:if="${#lists.isEmpty(article.comments)}" class="empty-comments">
+            <p>Soyez le premier à commenter ! 👇</p>
+        </div>
+
+        <div th:each="comment : ${article.comments}" class="comment-card">
+            <div class="comment-author">👤 <span th:text="${comment.author}"></span></div>
+            <div class="comment-text" th:text="${comment.text}"></div>
+        </div>
+    </div>
+
+    <!-- Formulaire commentaire -->
+    <div class="form-card">
+        <h2>✏️ Ajouter un commentaire</h2>
+        <form th:action="@{/articles/{id}/comments/add(id=${article.id})}" method="post">
+            <div class="form-group">
+                <label>Votre nom</label>
+                <input type="text" name="author" placeholder="Entrez votre nom" required/>
+            </div>
+            <div class="form-group">
+                <label>Votre commentaire</label>
+                <input type="text" name="text" placeholder="Écrivez votre commentaire..." required/>
+            </div>
+            <button class="btn-comment" type="submit">Commenter 💬</button>
+        </form>
+    </div>
+</div>
 </body>
 </html>
