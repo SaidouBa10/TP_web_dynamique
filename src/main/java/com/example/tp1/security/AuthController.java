@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/auth")
@@ -49,7 +50,7 @@ public class AuthController {
     }
     // Afficher page login
     @GetMapping("/login-form")
-    public String loginForm() {
+    public String loginForm(Model model) {
         return "login";
     }
 
@@ -68,17 +69,17 @@ public class AuthController {
                 return "login";
             }
 
-            String token = jwtUtil.generateToken(found.getUsername());
-            session.setAttribute("token", token);
-            session.setAttribute("username", username);
-            return "redirect:/dashboard";
+            // Sauvegarde dans la session
+            session.setAttribute("username", found.getUsername());
+            session.setMaxInactiveInterval(3600); // 1 heure
+
+            return "redirect:/auth/dashboard";  // ← /auth/dashboard
 
         } catch (Exception e) {
             model.addAttribute("error", "Utilisateur non trouvé !");
             return "login";
         }
     }
-
     // Afficher page register
     @GetMapping("/register-form")
     public String registerForm() {
@@ -89,26 +90,28 @@ public class AuthController {
     @PostMapping("/register-form")
     public String registerFormPost(@RequestParam String username,
                                    @RequestParam String password,
-                                   Model model) {
+                                   RedirectAttributes redirectAttributes) {
         try {
             User user = new User();
             user.setUsername(username);
             user.setPassword(passwordEncoder.encode(password));
             user.setRole("USER");
             userRepository.save(user);
-            model.addAttribute("success", "Compte créé ! Connectez-vous.");
-            return "register";
+            redirectAttributes.addFlashAttribute("success", "Compte créé ! Connectez-vous.");
+            return "redirect:/auth/login-form";
         } catch (Exception e) {
-            model.addAttribute("error", "Erreur lors de la création !");
-            return "register";
+            redirectAttributes.addFlashAttribute("error", "Erreur lors de la création !");
+            return "redirect:/auth/register-form";
         }
     }
-
     // Dashboard après login
     @GetMapping("/dashboard")
     public String dashboard(HttpSession session, Model model) {
         String username = (String) session.getAttribute("username");
-        if (username == null) return "redirect:/auth/login-form";
+        if (username == null) {
+            // Pas de session → redirige vers login
+            return "redirect:/auth/login-form";
+        }
         model.addAttribute("username", username);
         return "dashboard";
     }
