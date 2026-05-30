@@ -3,6 +3,7 @@ package com.example.tp1.controller;
 import com.example.tp1.model.Article;
 import com.example.tp1.model.Comment;
 import com.example.tp1.service.ArticleService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,14 +16,16 @@ public class ArticleViewController {
     private ArticleService articleService;
 
     @GetMapping("/articles")
-    public String articles(Model model) {
+    public String articles(Model model, HttpSession session) {
         model.addAttribute("articles", articleService.getAllArticles());
+        model.addAttribute("role", session.getAttribute("role"));
         return "articles";
     }
 
     @GetMapping("/articles/{id}")
-    public String articleDetail(@PathVariable Long id, Model model) {
+    public String articleDetail(@PathVariable Long id, Model model, HttpSession session) {
         articleService.getArticleById(id).ifPresent(a -> model.addAttribute("article", a));
+        model.addAttribute("role", session.getAttribute("role"));
         return "article-detail";
     }
 
@@ -33,8 +36,7 @@ public class ArticleViewController {
     }
 
     @PostMapping("/articles/{id}/comments/add")
-    public String addComment(@PathVariable Long id,
-                             @RequestParam String author,
+    public String addComment(@PathVariable Long id, @RequestParam String author,
                              @RequestParam String text) {
         Comment comment = new Comment();
         comment.setAuthor(author);

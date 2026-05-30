@@ -30,15 +30,19 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
-                        .requestMatchers("/products/**", "/articles/**").permitAll()
-                        .requestMatchers("/dashboard").permitAll()
+                        .requestMatchers("/auth/dashboard").permitAll()
+
+                        // ADMIN seulement
+                        .requestMatchers("/products/add", "/products/delete/**").hasRole("ADMIN")
+                        .requestMatchers("/articles/add", "/articles/delete/**").hasRole("ADMIN")
+
+                        // USER et ADMIN peuvent voir et commenter
+                        .requestMatchers("/products/**", "/articles/**").hasAnyRole("USER", "ADMIN")
+
                         .anyRequest().authenticated()
                 )
-                .headers(headers -> headers
-                        .frameOptions(frame -> frame.disable())
-                )
-                .addFilterBefore(jwtFilter,
-                        UsernamePasswordAuthenticationFilter.class);
+                .headers(headers -> headers.frameOptions(frame -> frame.disable()))
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 }

@@ -17,24 +17,21 @@
             border-bottom: 1px solid rgba(255,255,255,0.1);
             padding: 0 40px;
             display: flex; align-items: center;
-            justify-content: space-between;
-            height: 70px;
+            justify-content: space-between; height: 70px;
         }
         .navbar-brand { display: flex; align-items: center; gap: 12px; }
         .navbar-brand .icon {
             width: 40px; height: 40px;
             background: linear-gradient(135deg, #00b09b, #96c93d);
             border-radius: 10px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 18px;
+            display: flex; align-items: center; justify-content: center; font-size: 18px;
         }
         .navbar-brand h2 { font-size: 18px; font-weight: 700; }
         .btn-back {
             padding: 8px 20px; border-radius: 20px;
             text-decoration: none; font-size: 14px;
             color: rgba(255,255,255,0.7);
-            border: 1px solid rgba(255,255,255,0.15);
-            transition: all 0.3s;
+            border: 1px solid rgba(255,255,255,0.15); transition: all 0.3s;
         }
         .btn-back:hover { background: rgba(255,255,255,0.1); }
         .main { padding: 40px; max-width: 800px; margin: 0 auto; }
@@ -43,8 +40,7 @@
             backdrop-filter: blur(15px);
             border: 1px solid rgba(255,255,255,0.15);
             border-radius: 20px; padding: 40px; margin-bottom: 30px;
-            position: relative; overflow: hidden;
-            animation: slideUp 0.5s ease;
+            position: relative; overflow: hidden; animation: slideUp 0.5s ease;
         }
         @keyframes slideUp {
             from { opacity: 0; transform: translateY(20px); }
@@ -58,21 +54,16 @@
             background: linear-gradient(135deg, #00b09b, #96c93d);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .article-content { color: rgba(255,255,255,0.8); font-size: 16px; line-height: 1.8; }
-
-        /* COMMENTS */
         .comments-section { margin-top: 30px; }
         .comments-section h2 { font-size: 22px; margin-bottom: 20px; }
         .comment-card {
             background: rgba(255,255,255,0.06);
             border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 14px; padding: 20px; margin-bottom: 15px;
-            transition: all 0.3s;
+            border-radius: 14px; padding: 20px; margin-bottom: 15px; transition: all 0.3s;
         }
         .comment-card:hover { background: rgba(255,255,255,0.1); }
         .comment-author { font-weight: 700; color: #00b09b; margin-bottom: 8px; font-size: 14px; }
         .comment-text { color: rgba(255,255,255,0.8); font-size: 14px; line-height: 1.6; }
-
-        /* FORM COMMENT */
         .form-card {
             background: rgba(255,255,255,0.08);
             backdrop-filter: blur(15px);
@@ -92,10 +83,7 @@
             transition: all 0.3s; outline: none;
         }
         .form-group input::placeholder { color: rgba(255,255,255,0.3); }
-        .form-group input:focus {
-            border-color: #00b09b;
-            box-shadow: 0 0 0 3px rgba(0,176,155,0.15);
-        }
+        .form-group input:focus { border-color: #00b09b; box-shadow: 0 0 0 3px rgba(0,176,155,0.15); }
         .btn-comment {
             padding: 12px 28px;
             background: linear-gradient(135deg, #00b09b, #96c93d);
@@ -117,27 +105,23 @@
 </nav>
 
 <div class="main">
-    <!-- Article -->
     <div class="article-card">
         <div class="article-title" th:text="${article.title}"></div>
         <div class="article-content" th:text="${article.content}"></div>
     </div>
 
-    <!-- Commentaires -->
     <div class="comments-section">
         <h2>💬 Commentaires (<span th:text="${#lists.size(article.comments)}"></span>)</h2>
-
         <div th:if="${#lists.isEmpty(article.comments)}" class="empty-comments">
             <p>Soyez le premier à commenter ! 👇</p>
         </div>
-
         <div th:each="comment : ${article.comments}" class="comment-card">
             <div class="comment-author">👤 <span th:text="${comment.author}"></span></div>
             <div class="comment-text" th:text="${comment.text}"></div>
         </div>
     </div>
 
-    <!-- Formulaire commentaire -->
+    <!-- Formulaire commentaire visible pour tous -->
     <div class="form-card">
         <h2>✏️ Ajouter un commentaire</h2>
         <form th:action="@{/articles/{id}/comments/add(id=${article.id})}" method="post">

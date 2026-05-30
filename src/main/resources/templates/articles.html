@@ -17,16 +17,14 @@
             border-bottom: 1px solid rgba(255,255,255,0.1);
             padding: 0 40px;
             display: flex; align-items: center;
-            justify-content: space-between;
-            height: 70px;
+            justify-content: space-between; height: 70px;
         }
         .navbar-brand { display: flex; align-items: center; gap: 12px; }
         .navbar-brand .icon {
             width: 40px; height: 40px;
             background: linear-gradient(135deg, #00b09b, #96c93d);
             border-radius: 10px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 18px;
+            display: flex; align-items: center; justify-content: center; font-size: 18px;
         }
         .navbar-brand h2 { font-size: 18px; font-weight: 700; }
         .nav-links { display: flex; gap: 15px; }
@@ -34,8 +32,7 @@
             padding: 8px 20px; border-radius: 20px;
             text-decoration: none; font-size: 14px;
             color: rgba(255,255,255,0.7);
-            border: 1px solid rgba(255,255,255,0.15);
-            transition: all 0.3s;
+            border: 1px solid rgba(255,255,255,0.15); transition: all 0.3s;
         }
         .nav-link:hover, .nav-link.active {
             background: rgba(0,176,155,0.2);
@@ -55,10 +52,10 @@
         .form-card {
             background: rgba(255,255,255,0.08);
             backdrop-filter: blur(15px);
-            border: 1px solid rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,165,0,0.3);
             border-radius: 20px; padding: 30px; margin-bottom: 35px;
         }
-        .form-card h2 { font-size: 18px; margin-bottom: 20px; }
+        .form-card h2 { font-size: 18px; margin-bottom: 20px; color: #ffa500; }
         .form-group { margin-bottom: 15px; }
         .form-group label { display: block; font-size: 12px; font-weight: 600;
             color: rgba(255,255,255,0.6); margin-bottom: 8px;
@@ -72,17 +69,21 @@
         }
         .form-group input::placeholder, .form-group textarea::placeholder { color: rgba(255,255,255,0.3); }
         .form-group input:focus, .form-group textarea:focus {
-            border-color: #00b09b;
-            box-shadow: 0 0 0 3px rgba(0,176,155,0.15);
+            border-color: #ffa500; box-shadow: 0 0 0 3px rgba(255,165,0,0.15);
         }
         .btn-add {
             padding: 12px 28px;
-            background: linear-gradient(135deg, #00b09b, #96c93d);
+            background: linear-gradient(135deg, #f7971e, #ffd200);
             border: none; border-radius: 10px;
-            color: white; font-weight: 700; font-size: 14px;
+            color: #1a1a1a; font-weight: 700; font-size: 14px;
             cursor: pointer; transition: all 0.3s;
         }
-        .btn-add:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,176,155,0.4); }
+        .btn-add:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(255,165,0,0.4); }
+        .access-denied {
+            background: rgba(255,80,80,0.1); border: 1px solid rgba(255,80,80,0.3);
+            border-radius: 12px; padding: 15px 20px; margin-bottom: 20px;
+            color: #ff6b6b; font-size: 14px;
+        }
         .articles-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; }
         .article-card {
             background: rgba(255,255,255,0.08);
@@ -99,23 +100,19 @@
         .article-title { font-size: 20px; font-weight: 700; margin-bottom: 10px; }
         .article-content { color: rgba(255,255,255,0.6); font-size: 14px; line-height: 1.6; margin-bottom: 20px; }
         .article-footer { display: flex; align-items: center; justify-content: space-between; }
-        .comment-count {
-            background: rgba(0,176,155,0.2); color: #00e5cc;
-            padding: 5px 12px; border-radius: 20px; font-size: 13px;
-        }
+        .comment-count { background: rgba(0,176,155,0.2); color: #00e5cc;
+            padding: 5px 12px; border-radius: 20px; font-size: 13px; }
         .article-actions { display: flex; gap: 10px; }
         .btn-view {
             padding: 8px 18px;
-            background: rgba(0,176,155,0.2);
-            border: 1px solid rgba(0,176,155,0.4);
+            background: rgba(0,176,155,0.2); border: 1px solid rgba(0,176,155,0.4);
             border-radius: 8px; color: #00b09b;
             text-decoration: none; font-size: 13px; transition: all 0.3s;
         }
         .btn-view:hover { background: rgba(0,176,155,0.4); }
         .btn-delete {
             padding: 8px 16px;
-            background: rgba(255,80,80,0.15);
-            border: 1px solid rgba(255,80,80,0.3);
+            background: rgba(255,80,80,0.15); border: 1px solid rgba(255,80,80,0.3);
             border-radius: 8px; color: #ff6b6b;
             text-decoration: none; font-size: 13px; transition: all 0.3s;
         }
@@ -140,11 +137,12 @@
 <div class="main">
     <div class="page-header">
         <h1>📝 <span>Mon Blog</span></h1>
-        <p>Gérez vos articles et commentaires</p>
+        <p th:if="${role == 'ADMIN'}">👑 Mode Admin — Publication et suppression activées</p>
+        <p th:if="${role != 'ADMIN'}">💬 Mode Utilisateur — Lecture et commentaires</p>
     </div>
 
-    <!-- Formulaire -->
-    <div class="form-card">
+    <!-- Formulaire ADMIN seulement -->
+    <div class="form-card" th:if="${role == 'ADMIN'}">
         <h2>✏️ Nouvel article</h2>
         <form th:action="@{/articles/add}" method="post">
             <div class="form-group">
@@ -159,10 +157,14 @@
         </form>
     </div>
 
-    <!-- Articles -->
+    <!-- Message pour USER -->
+    <div class="access-denied" th:if="${role != 'ADMIN'}">
+        🔒 Vous êtes en mode lecture. Seul l'administrateur peut publier ou supprimer des articles.
+    </div>
+
     <div th:if="${#lists.isEmpty(articles)}" class="empty-state">
         <div class="empty-icon">📭</div>
-        <p>Aucun article pour l'instant. Soyez le premier à publier !</p>
+        <p>Aucun article pour l'instant.</p>
     </div>
 
     <div class="articles-grid">
@@ -173,7 +175,7 @@
                 <span class="comment-count">💬 <span th:text="${#lists.size(article.comments)}"></span> commentaire(s)</span>
                 <div class="article-actions">
                     <a th:href="@{/articles/{id}(id=${article.id})}" class="btn-view">Voir →</a>
-                    <a th:href="@{/articles/delete/{id}(id=${article.id})}" class="btn-delete">🗑️</a>
+                    <a th:if="${role == 'ADMIN'}" th:href="@{/articles/delete/{id}(id=${article.id})}" class="btn-delete">🗑️</a>
                 </div>
             </div>
         </div>
