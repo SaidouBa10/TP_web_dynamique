@@ -32,26 +32,18 @@
         .navbar-brand h2 { font-size: 18px; font-weight: 700; }
         .nav-links { display: flex; gap: 15px; }
         .nav-link {
-            padding: 8px 20px;
-            border-radius: 20px;
-            text-decoration: none;
-            font-size: 14px;
+            padding: 8px 20px; border-radius: 20px;
+            text-decoration: none; font-size: 14px;
             color: rgba(255,255,255,0.7);
             border: 1px solid rgba(255,255,255,0.15);
             transition: all 0.3s;
         }
         .nav-link:hover, .nav-link.active {
             background: rgba(30,144,255,0.2);
-            color: #1e90ff;
-            border-color: rgba(30,144,255,0.4);
+            color: #1e90ff; border-color: rgba(30,144,255,0.4);
         }
-
         .main { padding: 40px; }
-
-        .page-header {
-            margin-bottom: 35px;
-            animation: slideUp 0.5s ease;
-        }
+        .page-header { margin-bottom: 35px; animation: slideUp 0.5s ease; }
         @keyframes slideUp {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
@@ -60,21 +52,18 @@
         .page-header h1 span { background: linear-gradient(135deg, #1e90ff, #00bfff);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .page-header p { color: rgba(255,255,255,0.6); margin-top: 8px; }
-
-        /* FORM */
         .form-card {
             background: rgba(255,255,255,0.08);
             backdrop-filter: blur(15px);
-            border: 1px solid rgba(255,255,255,0.15);
-            border-radius: 20px;
-            padding: 30px;
-            margin-bottom: 35px;
+            border: 1px solid rgba(255,165,0,0.3);
+            border-radius: 20px; padding: 30px; margin-bottom: 35px;
         }
-        .form-card h2 { font-size: 18px; margin-bottom: 20px; color: rgba(255,255,255,0.9); }
-        .form-row { display: flex; gap: 15px; flex-wrap: wrap; }
-        .form-group { flex: 1; min-width: 200px; }
+        .form-card h2 { font-size: 18px; margin-bottom: 20px; color: #ffa500; }
+        .form-row { display: flex; gap: 15px; flex-wrap: wrap; align-items: flex-end; }
+        .form-group { flex: 1; min-width: 180px; }
         .form-group label { display: block; font-size: 12px; font-weight: 600;
-            color: rgba(255,255,255,0.6); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+            color: rgba(255,255,255,0.6); margin-bottom: 8px;
+            text-transform: uppercase; letter-spacing: 0.5px; }
         .form-group input {
             width: 100%; padding: 12px 16px;
             background: rgba(255,255,255,0.1);
@@ -83,28 +72,20 @@
             transition: all 0.3s; outline: none;
         }
         .form-group input::placeholder { color: rgba(255,255,255,0.3); }
-        .form-group input:focus {
-            border-color: #1e90ff;
-            background: rgba(255,255,255,0.15);
-            box-shadow: 0 0 0 3px rgba(30,144,255,0.15);
-        }
+        .form-group input:focus { border-color: #ffa500; box-shadow: 0 0 0 3px rgba(255,165,0,0.15); }
         .btn-add {
             padding: 12px 28px;
-            background: linear-gradient(135deg, #1e90ff, #00bfff);
+            background: linear-gradient(135deg, #f7971e, #ffd200);
             border: none; border-radius: 10px;
-            color: white; font-weight: 700; font-size: 14px;
+            color: #1a1a1a; font-weight: 700; font-size: 14px;
             cursor: pointer; transition: all 0.3s;
-            align-self: flex-end;
         }
-        .btn-add:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(30,144,255,0.4); }
-
-        /* TABLE */
+        .btn-add:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(255,165,0,0.4); }
         .table-card {
             background: rgba(255,255,255,0.08);
             backdrop-filter: blur(15px);
             border: 1px solid rgba(255,255,255,0.15);
-            border-radius: 20px;
-            overflow: hidden;
+            border-radius: 20px; overflow: hidden;
         }
         .table-header {
             padding: 20px 25px;
@@ -112,11 +93,6 @@
             display: flex; align-items: center; justify-content: space-between;
         }
         .table-header h2 { font-size: 18px; }
-        .badge {
-            background: rgba(30,144,255,0.2);
-            color: #1e90ff; padding: 4px 12px;
-            border-radius: 20px; font-size: 13px;
-        }
         table { width: 100%; border-collapse: collapse; }
         thead tr { background: rgba(255,255,255,0.05); }
         th { padding: 15px 25px; text-align: left; font-size: 12px;
@@ -126,21 +102,24 @@
         tbody tr { transition: background 0.2s; }
         tbody tr:hover { background: rgba(255,255,255,0.05); }
         .price-badge {
-            background: rgba(0,176,155,0.2);
-            color: #00e5cc; padding: 4px 12px;
-            border-radius: 20px; font-size: 13px; font-weight: 600;
+            background: rgba(0,176,155,0.2); color: #00e5cc;
+            padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 600;
         }
         .btn-delete {
             padding: 7px 16px;
             background: rgba(255,80,80,0.15);
             border: 1px solid rgba(255,80,80,0.3);
             border-radius: 8px; color: #ff6b6b;
-            text-decoration: none; font-size: 13px;
-            transition: all 0.3s;
+            text-decoration: none; font-size: 13px; transition: all 0.3s;
         }
         .btn-delete:hover { background: rgba(255,80,80,0.3); }
         .empty-state { text-align: center; padding: 60px; color: rgba(255,255,255,0.4); }
         .empty-state .empty-icon { font-size: 50px; margin-bottom: 15px; }
+        .access-denied {
+            background: rgba(255,80,80,0.1); border: 1px solid rgba(255,80,80,0.3);
+            border-radius: 12px; padding: 15px 20px; margin-bottom: 20px;
+            color: #ff6b6b; font-size: 14px;
+        }
     </style>
 </head>
 <body>
@@ -159,11 +138,12 @@
 <div class="main">
     <div class="page-header">
         <h1>📦 <span>Liste des Produits</span></h1>
-        <p>Gérez votre catalogue de produits</p>
+        <p th:if="${role == 'ADMIN'}">👑 Mode Admin — Ajout et suppression activés</p>
+        <p th:if="${role != 'ADMIN'}">👁️ Mode Lecture — Consultation uniquement</p>
     </div>
 
-    <!-- Formulaire -->
-    <div class="form-card">
+    <!-- Formulaire ADMIN seulement -->
+    <div class="form-card" th:if="${role == 'ADMIN'}">
         <h2>➕ Ajouter un produit</h2>
         <form th:action="@{/products/add}" method="post">
             <div class="form-row">
@@ -172,16 +152,21 @@
                     <input type="text" name="name" placeholder="Ex: Laptop Pro" required/>
                 </div>
                 <div class="form-group">
-                    <label>Prix (MRU)</label>
+                    <label>Prix (€)</label>
                     <input type="number" name="price" placeholder="Ex: 999" step="0.01" required/>
                 </div>
                 <div class="form-group">
                     <label>Description</label>
-                    <input type="text" name="description" placeholder="Description du produit"/>
+                    <input type="text" name="description" placeholder="Description"/>
                 </div>
                 <button class="btn-add" type="submit">Ajouter ➕</button>
             </div>
         </form>
+    </div>
+
+    <!-- Message pour USER -->
+    <div class="access-denied" th:if="${role != 'ADMIN'}">
+        🔒 Vous êtes en mode lecture. Seul l'administrateur peut ajouter ou supprimer des produits.
     </div>
 
     <!-- Tableau -->
@@ -196,7 +181,7 @@
                 <th>Nom</th>
                 <th>Prix</th>
                 <th>Description</th>
-                <th>Action</th>
+                <th th:if="${role == 'ADMIN'}">Action</th>
             </tr>
             </thead>
             <tbody>
@@ -211,9 +196,9 @@
             <tr th:each="product : ${products}">
                 <td th:text="${product.id}"></td>
                 <td th:text="${product.name}"></td>
-                <td><span class="price-badge" th:text="${product.price} + ' MRU'"></span></td>
+                <td><span class="price-badge" th:text="${product.price} + ' €'"></span></td>
                 <td th:text="${product.description}"></td>
-                <td>
+                <td th:if="${role == 'ADMIN'}">
                     <a th:href="@{/products/delete/{id}(id=${product.id})}" class="btn-delete">🗑️ Supprimer</a>
                 </td>
             </tr>

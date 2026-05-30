@@ -113,6 +113,22 @@
                     <input type="password" name="password" placeholder="Choisissez un mot de passe" required/>
                 </div>
             </div>
+            <div class="form-group">
+                <label>Rôle</label>
+                <div class="input-wrapper">
+                    <span class="input-icon">👑</span>
+                    <select name="role" style="
+            width: 100%; padding: 15px 15px 15px 48px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 12px; color: white; font-size: 15px;
+            outline: none; cursor: pointer;
+            -webkit-appearance: none;">
+                        <option value="USER" style="background: #203a43;">👤 Utilisateur</option>
+                        <option value="ADMIN" style="background: #203a43;">👑 Administrateur</option>
+                    </select>
+                </div>
+            </div>
             <button class="btn-register" type="submit">S'inscrire →</button>
         </form>
         <div class="divider">ou</div>

@@ -1,17 +1,14 @@
 package com.example.tp1.security;
 
-import com.example.tp1.security.User;
-import com.example.tp1.security.UserRepository;
-import com.example.tp1.security.JwtUtil;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Map;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/auth")
@@ -26,8 +23,9 @@ public class AuthController {
     @Autowired
     private JwtUtil jwtUtil;
 
-    // Register
+    // Register API (Postman)
     @PostMapping("/register")
+    @ResponseBody
     public String register(@RequestBody User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole("USER");
@@ -35,19 +33,19 @@ public class AuthController {
         return "Utilisateur créé !";
     }
 
-    // Login
+    // Login API (Postman)
     @PostMapping("/login")
+    @ResponseBody
     public Map<String, String> login(@RequestBody User user) {
         User found = userRepository.findByUsername(user.getUsername())
                 .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé !"));
-
         if (!passwordEncoder.matches(user.getPassword(), found.getPassword())) {
             throw new RuntimeException("Mot de passe incorrect !");
         }
-
         String token = jwtUtil.generateToken(found.getUsername());
         return Map.of("token", token);
     }
+
     // Afficher page login
     @GetMapping("/login-form")
     public String loginForm(Model model) {
@@ -59,27 +57,29 @@ public class AuthController {
     public String loginFormPost(@RequestParam String username,
                                 @RequestParam String password,
                                 HttpSession session,
-                                Model model) {
+                                RedirectAttributes redirectAttributes) {
         try {
             User found = userRepository.findByUsername(username)
                     .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé !"));
 
             if (!passwordEncoder.matches(password, found.getPassword())) {
-                model.addAttribute("error", "Mot de passe incorrect !");
-                return "login";
+                redirectAttributes.addFlashAttribute("error", "Mot de passe incorrect !");
+                return "redirect:/auth/login-form";
             }
 
-            // Sauvegarde dans la session
+            // Sauvegarde username ET role dans la session
             session.setAttribute("username", found.getUsername());
-            session.setMaxInactiveInterval(3600); // 1 heure
+            session.setAttribute("role", found.getRole());
+            session.setMaxInactiveInterval(3600);
 
-            return "redirect:/auth/dashboard";  // ← /auth/dashboard
+            return "redirect:/auth/dashboard";
 
         } catch (Exception e) {
-            model.addAttribute("error", "Utilisateur non trouvé !");
-            return "login";
+            redirectAttributes.addFlashAttribute("error", "Utilisateur non trouvé !");
+            return "redirect:/auth/login-form";
         }
     }
+
     // Afficher page register
     @GetMapping("/register-form")
     public String registerForm() {
@@ -90,12 +90,13 @@ public class AuthController {
     @PostMapping("/register-form")
     public String registerFormPost(@RequestParam String username,
                                    @RequestParam String password,
+                                   @RequestParam String role,
                                    RedirectAttributes redirectAttributes) {
         try {
             User user = new User();
             user.setUsername(username);
             user.setPassword(passwordEncoder.encode(password));
-            user.setRole("USER");
+            user.setRole(role);
             userRepository.save(user);
             redirectAttributes.addFlashAttribute("success", "Compte créé ! Connectez-vous.");
             return "redirect:/auth/login-form";
@@ -104,15 +105,15 @@ public class AuthController {
             return "redirect:/auth/register-form";
         }
     }
+
     // Dashboard après login
     @GetMapping("/dashboard")
     public String dashboard(HttpSession session, Model model) {
         String username = (String) session.getAttribute("username");
-        if (username == null) {
-            // Pas de session → redirige vers login
-            return "redirect:/auth/login-form";
-        }
+        String role = (String) session.getAttribute("role");
+        if (username == null) return "redirect:/auth/login-form";
         model.addAttribute("username", username);
+        model.addAttribute("role", role);
         return "dashboard";
     }
 
