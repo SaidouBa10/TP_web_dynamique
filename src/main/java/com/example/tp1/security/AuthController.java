@@ -93,6 +93,7 @@ public class AuthController {
                                    @RequestParam String role,
                                    RedirectAttributes redirectAttributes) {
         try {
+
             User user = new User();
             user.setUsername(username);
             user.setPassword(passwordEncoder.encode(password));
